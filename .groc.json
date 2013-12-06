@@ -1,0 +1,20 @@
+{
+  "glob": [
+    "*.md",
+    "*.js",
+
+    "src/**/*.js",
+    "src/**/*.coffee",
+    "src/**/*.scss",
+    "src/**/*.md",
+
+    "test/**/*.coffee",
+    "test/**/*.md"
+  ],
+  "except": [],
+  "index": "README.md",
+  "root": ".",
+  "out": "docs",
+  "silent": false,
+  "strip": []
+}

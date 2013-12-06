@@ -1,0 +1,38 @@
+{
+  "name": "angular-notifications",
+  "version": "0.1.0",
+  "description": "Notification service for angular offering alerts and confirms supporting cordova",
+  "homepage": "https://github.com/killercup/angular-notifications",
+  "scripts": {
+    "bower": "bower install",
+    "docs": "groc",
+    "publish_docs": "groc --github"
+  },
+  "keywords": [
+    "angular.js",
+    "notifications",
+    "cordova"
+  ],
+  "author": {
+    "name": "Pascal Hertleif",
+    "url": "https://github.com/killercup"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/killercup/angular-notifications/blob/master/LICENSE"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/killercup/angular-notifications"
+  },
+  "bugs": {
+    "url": "https://github.com/killercup/angular-notifications/issues"
+  },
+  "dependecies": {},
+  "devDependencies": {
+    "groc": "killercup/groc#caa2f2062e6f29a1826e3560a6f16f1ca3bd2118",
+    "bower": "~1.2.7"
+  }
+}

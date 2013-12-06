@@ -1,0 +1,29 @@
+{
+  "name": "angular-notifications",
+  "version": "0.1.0",
+  "homepage": "https://github.com/killercup/angular-notifications",
+  "authors": [
+    "Pascal Hertleif <killercup@gmail.com>"
+  ],
+  "description": "Notification service for angular offering alerts and confirms supporting cordova",
+  "main": "src/notifications.js",
+  "keywords": [
+    "angular.js",
+    "notifications",
+    "cordova"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "angular": "~1.2.3",
+    "angular-mocks": "~1.2.3"
+  },
+  "dependencies": {}
+}
