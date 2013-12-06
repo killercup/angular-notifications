@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="en"><head><title>src/notifications</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="src/notifications"><meta name="groc-project-path" content="src/notifications.js"><meta name="groc-github-url" content="https://github.com/killercup/angular-notifications"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/killercup/angular-notifications/blob/master/src/notifications.js">src/notifications.js</a></div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="notification-display-service">Notification Display Service</h1>
+<p>Uses PhoneGap/Cordova or native browser alerts.</p>
+<p>For Cordova, this expects <code>navigator.notification</code> to be defined, e.g. by the
+<code>org.apache.cordova.dialogs</code> plugin.</p></div></div><div class="code"><div class="wrapper">angular.module(<span class="string">"notifications"</span>, [])
+
+.factory(<span class="string">"Notifications"</span>, <span class="function"><span class="keyword">function</span> <span class="params">($q)</span> {</span>
+  <span class="string">"use strict"</span>;
+  <span class="keyword">var</span> res = {};</div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><h2 id="show-alert-message">Show Alert Message</h2>
+<p>If the app is running with Cordova, this method tries to display a native
+alert message, with a title (<code>options.title</code>), a message body
+(<code>options.msg</code>) and a button labeled <code>options.button</code>. It will also call
+<code>options.callback</code> after the notification is closed.</p>
+<p>The default browser <code>window.alert</code> will only display <code>options.msg</code>.</p>
+<p>Parameters:</p>
+<ul>
+<li><p><strong>options must be an Object.</strong></p>
+<ul>
+<li><p><strong>options.msg must be a String.</strong><br/>(Message)</p>
+</li>
+<li><p><strong>options.title is optional and must be a String.</strong><br/>(Title (only on native))</p>
+</li>
+<li><p><strong>options.button is optional and must be a String.</strong><br/>(Button label (only on native))</p>
+</li>
+<li><p><strong>options.callback is optional and must be a Function.</strong><br/>(Callback)</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Returns a Promise</strong><br/>(Resolves with the return value of the <code>alert</code> call.)</p></div></div><div class="code"><div class="wrapper">  res.alert = <span class="function"><span class="keyword">function</span> <span class="params">(options)</span> {</span>
+    <span class="keyword">if</span> (!options) {
+      <span class="keyword">return</span>;
+    }
+
+    <span class="keyword">var</span> deferred = $q.defer();
+
+    <span class="keyword">var</span> _alert;
+    <span class="keyword">if</span> (navigator &amp;&amp; navigator.notification &amp;&amp; navigator.notification.alert) {
+      <span class="keyword">return</span> navigator.notification.alert(
+        options.msg || <span class="string">""</span>,
+        <span class="function"><span class="keyword">function</span> <span class="params">(buttonIndex)</span> {</span>
+          <span class="keyword">if</span> (<span class="keyword">typeof</span> options.callback === <span class="string">'function'</span>) {
+            options.callback(buttonIndex);
+          }
+          deferred.resolve(buttonIndex);
+        },
+        options.title,
+        options.button
+      );
+    } <span class="keyword">else</span> {
+      <span class="keyword">var</span> _c = window.alert(options.msg);
+      <span class="keyword">if</span> (<span class="keyword">typeof</span> options.callback === <span class="string">'function'</span>) {
+        options.callback(_c);
+      }
+      deferred.resolve(_c);
+    }
+
+    <span class="keyword">return</span> deferred.promise;
+  };</div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><h2 id="ask-for-confirmation">Ask for Confirmation</h2>
+<p>If the app is running with Cordova, this method tries to display a native
+confirm message, with a title (<code>options.title</code>), a message body
+(<code>options.msg</code>) and serveral buttons, given as an array of strings in
+<code>options.button</code>. It will also execute <code>options.callback(buttonIndex)</code>
+when a button is tapped.</p>
+<p>The default browser <code>window.confirm</code> will only display <code>options.msg</code> and
+the callback will only be given a boolean argument (don&#39;t forget to handle
+that specifically).</p>
+<p>Parameters:</p>
+<ul>
+<li><p><strong>options must be an Object.</strong></p>
+<ul>
+<li><p><strong>options.msg must be a String.</strong><br/>(Message)</p>
+</li>
+<li><p><strong>options.title is optional and must be a String.</strong><br/>(Title (only on native))</p>
+</li>
+<li><p><strong>options.buttons is optional and must be an Array of Strings.</strong><br/>(Button labels (only on native))</p>
+</li>
+<li><p><strong>options.callback is optional and must be a Function.</strong><br/>(Callback, called with index of clicked button (on native) or Bool (browser))</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Returns a Promise</strong><br/>(Resolves with the return value of the <code>confirm</code> call.)</p></div></div><div class="code"><div class="wrapper">  res.confirm = <span class="function"><span class="keyword">function</span> <span class="params">(options)</span> {</span>
+    <span class="keyword">if</span> (!options) {
+      <span class="keyword">return</span>;
+    }
+
+    <span class="keyword">var</span> deferred = $q.defer();
+
+    <span class="keyword">var</span> _alert;
+    <span class="keyword">if</span> (navigator &amp;&amp; navigator.notification &amp;&amp; navigator.notification.confirm) {
+      <span class="keyword">return</span> navigator.notification.confirm(
+        options.msg || <span class="string">""</span>,
+        <span class="function"><span class="keyword">function</span> <span class="params">(buttonIndex)</span> {</span>
+          <span class="keyword">if</span> (<span class="keyword">typeof</span> options.callback === <span class="string">'function'</span>) {
+            options.callback(buttonIndex);
+          }
+          deferred.resolve(buttonIndex);
+        },
+        options.title,
+        options.buttons.join(<span class="string">','</span>)
+      );
+    } <span class="keyword">else</span> {
+      <span class="keyword">var</span> _c = window.confirm(options.msg);
+      <span class="keyword">if</span> (<span class="keyword">typeof</span> options.callback === <span class="string">'function'</span>) {
+        options.callback(_c);
+      }
+      deferred.resolve(_c);
+    }
+
+    <span class="keyword">return</span> deferred.promise;
+  };
+
+  <span class="keyword">return</span> res;
+})
+
+;</div></div></div></div></body></html>
