@@ -1,10 +1,13 @@
 <!DOCTYPE html><html lang="en"><head><title>index</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="index"><meta name="groc-project-path" content="README.md"><meta name="groc-github-url" content="https://github.com/killercup/angular-notifications"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/killercup/angular-notifications/blob/master/README.md">README.md</a></div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="angular-notifications-service">Angular Notifications Service</h1>
-<p>Notification service for angular offering alerts and confirms supporting cordova</p>
+<p>Notification service for <a href="http://angularjs.org/">Angular.js</a> offering alerts and confirms, with special support for <a href="https://github.com/apache/cordova-plugin-dialogs">Cordova&#39;s Notifications plugin</a> (allows setting the notification title and button lables).</p>
 <h2 id="install">Install</h2>
 <p>For now, just make sure the <code>src/notifications.js</code> is somewhere in your build process so you can require <code>notifications</code> in your modules.</p>
 <h2 id="usage">Usage</h2>
 <pre><code class="lang-coffeescript">angular.<span class="built_in">module</span>(<span class="string">"Demo"</span>, [<span class="string">'notifications'</span>])
 .controller <span class="string">'DemoCrt'</span>, <span class="function"><span class="params">(Notifications)</span> -&gt;</span>
-    Notifications.alert
+    userAlert = Notifications.alert
       <span class="attribute">title</span>: <span class="string">"Hi there!"</span>
-      <span class="attribute">msg</span>: <span class="string">"You seem to be expecting the demo controller!"</span></code></pre></div></div></div></div></body></html>
+      <span class="attribute">msg</span>: <span class="string">"You seem to be expecting the demo controller!"</span>
+
+    userAlert.<span class="keyword">then</span><span class="function"> -&gt;</span>
+      console.log(<span class="string">"User closed the controller expectation alert"</span>)</code></pre></div></div></div></div></body></html>
