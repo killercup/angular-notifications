@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notification Display Service - notifications.js</title>
+
+  <link rel="stylesheet" href="../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../"/>
+  <meta name="groc-document-path" content="src/notifications.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        src/notifications.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h1 id="notification-display-service"><a href="#notification-display-service" class="anchor"></a>Notification Display Service</h1><p>Uses PhoneGap/Cordova or native browser alerts.</p>
+<p>For Cordova, this expects <code>navigator.notification</code> to be defined, e.g. by the
+<code>org.apache.cordova.dialogs</code> plugin.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">angular.module(<span class="hljs-string">"notifications"</span>, [])
+
+.factory(<span class="hljs-string">"Notifications"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($q)</span> {</span>
+<span class="hljs-pi">  "use strict"</span>;
+  <span class="hljs-keyword">var</span> res = {};
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments doc-section">
+          <div class="wrapper"><h2 id="show-alert-message"><a href="#show-alert-message" class="anchor"></a>Show Alert Message</h2><p>If the app is running with Cordova, this method tries to display a native
+alert message, with a title (<code>options.title</code>), a message body
+(<code>options.msg</code>) and a button labeled <code>options.button</code>. It will also call
+<code>options.callback</code> after the notification is closed.</p>
+<p>The default browser <code>window.alert</code> will only display <code>options.msg</code>.</p>
+<p>Parameters:</p>
+<ul>
+<li><strong><code>options</code> must be an Object.</strong><ul>
+<li><strong><code>options.msg</code> must be a String.</strong><br/>(Message)</li>
+<li><strong><code>options.title</code> is optional and must be a String.</strong><br/>(Title (only on native))</li>
+<li><strong><code>options.button</code> is optional and must be a String.</strong><br/>(Button label (only on native))</li>
+<li><strong><code>options.callback</code> is optional and must be a Function.</strong><br/>(Callback)</li>
+</ul>
+</li>
+</ul>
+<p><strong>Returns a Promise</strong><br/>(Resolves with the return value of the <code>alert</code> call.)</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  res.alert = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> {</span>
+    <span class="hljs-keyword">if</span> (!options) {
+      <span class="hljs-keyword">return</span>;
+    }
+
+    <span class="hljs-keyword">var</span> deferred = $q.defer();
+
+    <span class="hljs-keyword">var</span> _alert;
+    <span class="hljs-keyword">if</span> (navigator &amp;&amp; navigator.notification &amp;&amp; navigator.notification.alert) {
+      <span class="hljs-keyword">return</span> navigator.notification.alert(
+        options.msg || <span class="hljs-string">""</span>,
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(buttonIndex)</span> {</span>
+          <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options.callback === <span class="hljs-string">'function'</span>) {
+            options.callback(buttonIndex);
+          }
+          deferred.resolve(buttonIndex);
+        },
+        options.title,
+        options.button
+      );
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">var</span> _c = window.alert(options.msg);
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options.callback === <span class="hljs-string">'function'</span>) {
+        options.callback(_c);
+      }
+      deferred.resolve(_c);
+    }
+
+    <span class="hljs-keyword">return</span> deferred.promise;
+  };
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments doc-section">
+          <div class="wrapper"><h2 id="ask-for-confirmation"><a href="#ask-for-confirmation" class="anchor"></a>Ask for Confirmation</h2><p>If the app is running with Cordova, this method tries to display a native
+confirm message, with a title (<code>options.title</code>), a message body
+(<code>options.msg</code>) and serveral buttons, given as an array of strings in
+<code>options.button</code>. It will also execute <code>options.callback(buttonIndex)</code>
+when a button is tapped.</p>
+<p>The default browser <code>window.confirm</code> will only display <code>options.msg</code> and
+the callback will only be given a boolean argument (don&#39;t forget to handle
+that specifically).</p>
+<p>Parameters:</p>
+<ul>
+<li><strong><code>options</code> must be an Object.</strong><ul>
+<li><strong><code>options.msg</code> must be a String.</strong><br/>(Message)</li>
+<li><strong><code>options.title</code> is optional and must be a String.</strong><br/>(Title (only on native))</li>
+<li><strong><code>options.buttons</code> is optional and must be an Array of Strings.</strong><br/>(Button labels (only on native))</li>
+<li><strong><code>options.callback</code> is optional and must be a Function.</strong><br/>(Callback, called with index of clicked button (on native) or Bool (browser))</li>
+</ul>
+</li>
+</ul>
+<p><strong>Returns a Promise</strong><br/>(Resolves with the return value of the <code>confirm</code> call.)</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  res.confirm = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> {</span>
+    <span class="hljs-keyword">if</span> (!options) {
+      <span class="hljs-keyword">return</span>;
+    }
+
+    <span class="hljs-keyword">var</span> deferred = $q.defer();
+
+    <span class="hljs-keyword">var</span> _alert;
+    <span class="hljs-keyword">if</span> (navigator &amp;&amp; navigator.notification &amp;&amp; navigator.notification.confirm) {
+      <span class="hljs-keyword">return</span> navigator.notification.confirm(
+        options.msg || <span class="hljs-string">""</span>,
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(buttonIndex)</span> {</span>
+          <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options.callback === <span class="hljs-string">'function'</span>) {
+            options.callback(buttonIndex);
+          }
+          deferred.resolve(buttonIndex);
+        },
+        options.title,
+        options.buttons.join(<span class="hljs-string">','</span>)
+      );
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">var</span> _c = window.confirm(options.msg);
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options.callback === <span class="hljs-string">'function'</span>) {
+        options.callback(_c);
+      }
+      deferred.resolve(_c);
+    }
+
+    <span class="hljs-keyword">return</span> deferred.promise;
+  };
+
+  <span class="hljs-keyword">return</span> res;
+})
+
+;</div></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../toc.js"></script>
+  <script src="../assets/libs.js"></script>
+  <script src="../assets/behavior.js"></script>
+</body>
+</html>
