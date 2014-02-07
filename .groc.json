@@ -16,5 +16,6 @@
   "root": ".",
   "out": "docs",
   "silent": false,
-  "strip": []
+  "strip": [],
+  "repository-url": "https://github.com/killercup/angular-notifications"
 }
