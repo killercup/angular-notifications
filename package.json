@@ -5,8 +5,8 @@
   "homepage": "https://github.com/killercup/angular-notifications",
   "scripts": {
     "bower": "bower install",
-    "docs": "groc",
-    "publish_docs": "groc --github"
+    "docs": "grock",
+    "publish_docs": "grock --github"
   },
   "keywords": [
     "angular.js",
@@ -32,7 +32,7 @@
   },
   "dependecies": {},
   "devDependencies": {
-    "groc": "killercup/groc#caa2f2062e6f29a1826e3560a6f16f1ca3bd2118",
+    "grock": "~0.2.5",
     "bower": "~1.2.7"
   }
 }
